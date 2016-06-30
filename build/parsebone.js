@@ -13997,6 +13997,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ParseQuery = __webpack_require__(/*! parse/lib/browser/ParseQuery */ 80);
 	var ParseObject = __webpack_require__(/*! parse/lib/browser/ParseObject */ 40);
 	var Events = __webpack_require__(/*! ./events */ 131);
+	var extend = __webpack_require__(/*! ./extend */ 132);
 	
 	function Collection() {
 	  var models = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
@@ -14464,6 +14465,35 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _[method].apply(_, (_ref = [this.models]).concat.apply(_ref, arguments));
 	  };
 	});
+	
+	/**
+	 * Creates a new subclass of <code>Parse.Collection</code>.  For example,<pre>
+	 *   var MyCollection = Parse.Collection.extend({
+	 *     // Instance properties
+	 *
+	 *     model: MyClass,
+	 *     query: MyQuery,
+	 *
+	 *     getFirst: function() {
+	 *       return this.at(0);
+	 *     }
+	 *   }, {
+	 *     // Class properties
+	 *
+	 *     makeOne: function() {
+	 *       return new MyCollection();
+	 *     }
+	 *   });
+	 *
+	 *   var collection = new MyCollection();
+	 * </pre>
+	 *
+	 * @function
+	 * @param {Object} instanceProps Instance properties for the collection.
+	 * @param {Object} classProps Class properies for the collection.
+	 * @return {Class} A new subclass of <code>Parse.Collection</code>.
+	 */
+	Collection.extend = extend;
 	
 	module.exports = Collection;
 
@@ -16207,6 +16237,74 @@ return /******/ (function(modules) { // webpackBootstrap
 	Events.unbind = Events.off;
 	
 	module.exports = Events;
+
+/***/ },
+/* 132 */
+/*!***********************!*\
+  !*** ./src/extend.js ***!
+  \***********************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _ = __webpack_require__(/*! underscore */ 130);
+	
+	// Shared empty constructor function to aid in prototype-chain creation.
+	var EmptyConstructor = function EmptyConstructor() {};
+	
+	// Helper function to correctly set up the prototype chain, for subclasses.
+	// Similar to `goog.inherits`, but uses a hash of prototype properties and
+	// class properties to be extended.
+	function inherits(parent, protoProps, staticProps) {
+	  var child;
+	
+	  // The constructor function for the new subclass is either defined by you
+	  // (the "constructor" property in your `extend` definition), or defaulted
+	  // by us to simply call the parent's constructor.
+	  if (protoProps && protoProps.hasOwnProperty('constructor')) {
+	    child = protoProps.constructor;
+	  } else {
+	    /** @ignore */
+	    child = function child() {
+	      parent.apply(this, arguments);
+	    };
+	  }
+	
+	  // Inherit class (static) properties from parent.
+	  _.extend(child, parent);
+	
+	  // Set the prototype chain to inherit from `parent`, without calling
+	  // `parent`'s constructor function.
+	  EmptyConstructor.prototype = parent.prototype;
+	  child.prototype = new EmptyConstructor();
+	
+	  // Add prototype properties (instance properties) to the subclass,
+	  // if supplied.
+	  if (protoProps) {
+	    _.extend(child.prototype, protoProps);
+	  }
+	
+	  // Add static properties to the constructor function, if supplied.
+	  if (staticProps) {
+	    _.extend(child, staticProps);
+	  }
+	
+	  // Correctly set child's `prototype.constructor`.
+	  child.prototype.constructor = child;
+	
+	  // Set a convenience property in case the parent's prototype is
+	  // needed later.
+	  child.__super__ = parent.prototype;
+	
+	  return child;
+	}
+	
+	// A self-propagating extend function.
+	module.exports = function extend(protoProps, classProps) {
+	  var child = inherits(this, protoProps, classProps);
+	  child.extend = this.extend;
+	  return child;
+	};
 
 /***/ }
 /******/ ])

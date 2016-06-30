@@ -2,6 +2,7 @@ var _ = require('underscore')
 var ParseQuery = require('parse/lib/browser/ParseQuery')
 var ParseObject = require('parse/lib/browser/ParseObject')
 var Events = require('./events')
+var extend = require('./extend')
 
 function Collection (models = [], options = {}) {
   if (options.comparator) {
@@ -483,5 +484,34 @@ _.each(methods, function (method) {
     return _[method].apply(_, [this.models].concat(...arguments))
   }
 })
+
+/**
+ * Creates a new subclass of <code>Parse.Collection</code>.  For example,<pre>
+ *   var MyCollection = Parse.Collection.extend({
+ *     // Instance properties
+ *
+ *     model: MyClass,
+ *     query: MyQuery,
+ *
+ *     getFirst: function() {
+ *       return this.at(0);
+ *     }
+ *   }, {
+ *     // Class properties
+ *
+ *     makeOne: function() {
+ *       return new MyCollection();
+ *     }
+ *   });
+ *
+ *   var collection = new MyCollection();
+ * </pre>
+ *
+ * @function
+ * @param {Object} instanceProps Instance properties for the collection.
+ * @param {Object} classProps Class properies for the collection.
+ * @return {Class} A new subclass of <code>Parse.Collection</code>.
+ */
+Collection.extend = extend
 
 module.exports = Collection
