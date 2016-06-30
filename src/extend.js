@@ -1,4 +1,4 @@
-var _ = require('underscore')
+const _ = require('underscore')
 
 // Shared empty constructor function to aid in prototype-chain creation.
 const EmptyConstructor = function () {}
@@ -7,7 +7,7 @@ const EmptyConstructor = function () {}
 // Similar to `goog.inherits`, but uses a hash of prototype properties and
 // class properties to be extended.
 function inherits (parent, protoProps, staticProps) {
-  var child
+  let child
 
   // The constructor function for the new subclass is either defined by you
   // (the "constructor" property in your `extend` definition), or defaulted
@@ -52,7 +52,7 @@ function inherits (parent, protoProps, staticProps) {
 
 // A self-propagating extend function.
 module.exports = function extend (protoProps, classProps) {
-  var child = inherits(this, protoProps, classProps)
+  const child = inherits(this, protoProps, classProps)
   child.extend = this.extend
   return child
 }

@@ -1,8 +1,8 @@
-var _ = require('underscore')
-var ParseQuery = require('parse/lib/browser/ParseQuery')
-var ParseObject = require('parse/lib/browser/ParseObject')
-var Events = require('./events')
-var extend = require('./extend')
+const _ = require('underscore')
+const ParseQuery = require('parse/lib/browser/ParseQuery')
+const ParseObject = require('parse/lib/browser/ParseObject')
+const Events = require('./events')
+const extend = require('./extend')
 
 function Collection (models = [], options = {}) {
   if (options.comparator) {
@@ -298,6 +298,7 @@ _.extend(Collection.prototype, Events, {
       } else {
         collection.reset(results, options)
       }
+
       return collection
     })._thenRunCallbacks(options, this)
   },
@@ -341,6 +342,7 @@ _.extend(Collection.prototype, Events, {
       if (options.wait) {
         coll.add(nextModel, options)
       }
+
       if (success) {
         success(nextModel, resp)
       } else {

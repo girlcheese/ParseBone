@@ -28,7 +28,12 @@ const Events = {
    * function. Passing `"all"` will bind the callback to all events fired.
    */
   on: function (events, callback, context) {
-    var calls, event, node, tail, list
+    let calls
+    let event
+    let node
+    let tail
+    let list
+
     if (!callback) {
       return this
     }
@@ -39,6 +44,7 @@ const Events = {
     // modification.  The tail is an empty object that will always be used
     // as the next node.
     event = events.shift()
+
     while (event) {
       list = calls[event]
       node = list ? list.tail : {}
@@ -58,12 +64,18 @@ const Events = {
    * event. If `events` is null, removes all bound callbacks for all events.
    */
   off: function (events, callback, context) {
-    var event, calls, node, tail, cb, ctx
+    let event
+    let calls
+    let node
+    let tail
+    let cb
+    let ctx
 
     // No events, or removing *all* events.
     if (!(calls = this._callbacks)) {
       return
     }
+
     if (!(events || callback || context)) {
       delete this._callbacks
       return this
@@ -73,16 +85,20 @@ const Events = {
     // linked list of callbacks if appropriate.
     events = events ? events.split(eventSplitter) : Object.keys(calls)
     event = events.shift()
+
     while (event) {
       node = calls[event]
       delete calls[event]
+
       if (!node || !(callback || context)) {
         event = events.shift()
         continue
       }
+
       // Create a new list, omitting the indicated callbacks.
       tail = node.tail
       node = node.next
+
       while (node !== tail) {
         cb = node.callback
         ctx = node.context
@@ -91,6 +107,7 @@ const Events = {
         }
         node = node.next
       }
+
       event = events.shift()
     }
 
@@ -104,10 +121,18 @@ const Events = {
    * receive the true name of the event as the first argument).
    */
   trigger: function (events) {
-    var event, node, calls, tail, args, all, rest
+    let event
+    let node
+    let calls
+    let tail
+    let args
+    let all
+    let rest
+
     if (!(calls = this._callbacks)) {
       return this
     }
+
     all = calls.all
     events = events.split(eventSplitter)
     rest = Array.slice.call(arguments, 1)
@@ -115,15 +140,19 @@ const Events = {
     // For each event, walk through the linked list of callbacks twice,
     // first to trigger the event, then to trigger any `"all"` callbacks.
     event = events.shift()
+
     while (event) {
       node = calls[event]
+
       if (node) {
         tail = node.tail
         while ((node = node.next) !== tail) {
           node.callback.apply(node.context || this, rest)
         }
       }
+
       node = all
+
       if (node) {
         tail = node.tail
         args = [event].concat(rest)
@@ -131,6 +160,7 @@ const Events = {
           node.callback.apply(node.context || this, args)
         }
       }
+
       event = events.shift()
     }
 
