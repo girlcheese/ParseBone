@@ -505,7 +505,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  _prepareModel: function _prepareModel(model, options) {
 	    var Model = this.model;
 
-	    if (!(model instanceof Parse.Object)) {
+	    if (!(model instanceof _ParseObject2.default)) {
 	      var attrs = model;
 
 	      options.collection = this;

@@ -386,7 +386,7 @@ _.extend(Collection.prototype, Events, {
   _prepareModel: function (model, options) {
     const Model = this.model
 
-    if (!(model instanceof Parse.Object)) {
+    if (!(model instanceof ParseObject)) {
       const attrs = model
 
       options.collection = this
