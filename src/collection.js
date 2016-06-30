@@ -3,6 +3,7 @@ const ParseQuery = require('parse/lib/browser/ParseQuery')
 const ParseObject = require('parse/lib/browser/ParseObject')
 const Events = require('./events')
 const extend = require('./extend')
+const isNullOrUndefined = require('./helpers/isNullOrUndefined')
 
 function Collection (models = [], options = {}) {
   if (options.comparator) {
@@ -82,7 +83,7 @@ _.extend(Collection.prototype, Events, {
 
       id = model.id
 
-      if (!this._isNullOrUndefined(id) && (ids[id] || this._byId[id])) {
+      if (!isNullOrUndefined(id) && (ids[id] || this._byId[id])) {
         throw new Error('Duplicate id: can\'t add the same model to a collection twice')
       }
 
@@ -103,7 +104,7 @@ _.extend(Collection.prototype, Events, {
     // Insert models into the collection, re-sorting if needed, and triggering
     // `add` events unless silenced.
     this.length += length
-    index = this._isNullOrUndefined(options.at) ? this.models.length : options.at
+    index = isNullOrUndefined(options.at) ? this.models.length : options.at
     this.models.splice.apply(this.models, [index, 0].concat(models))
 
     if (this.comparator) {
@@ -436,10 +437,6 @@ _.extend(Collection.prototype, Events, {
     }
 
     this.trigger.apply(this, arguments)
-  },
-
-  _isNullOrUndefined (x) {
-    return _.isNull(x) || _.isUndefined(x)
   }
 })
 

@@ -126,6 +126,7 @@ Parse.LiveQueryClient = require('parse/lib/browser/LiveQueryClient')
 
 Parse.Collection = require('./collection')
 Parse.Events = require('./events')
+Parse.History = require('./history')
 Parse.View = require('./view')
 
 Parse._request = function () {
