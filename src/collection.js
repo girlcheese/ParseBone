@@ -1,7 +1,7 @@
-import _ from 'underscore'
-import ParseQuery from 'parse/lib/browser/ParseQuery'
-import ParseObject from 'parse/lib/browser/ParseObject'
-import Events from './events'
+var _ = require('underscore')
+var ParseQuery = require('parse/lib/browser/ParseQuery')
+var ParseObject = require('parse/lib/browser/ParseObject')
+var Events = require('./events')
 
 function Collection (models = [], options = {}) {
   if (options.comparator) {
@@ -484,4 +484,4 @@ _.each(methods, function (method) {
   }
 })
 
-export default Collection
+module.exports = Collection

@@ -148,4 +148,4 @@ Events.bind = Events.on
  */
 Events.unbind = Events.off
 
-export default Events
+module.exports = Events

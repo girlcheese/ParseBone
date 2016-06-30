@@ -11,7 +11,7 @@ module.exports = {
     fileGlob: '**/*.js',
     srcPath: 'src/',
     entryFile: 'parsebone.js',
-    libraryName: 'parsebone',
+    libraryName: 'ParseBone',
     outputPath: '',
     outputFile: 'parsebone.js',
     outputMinFile: 'parsebone.min.js'
