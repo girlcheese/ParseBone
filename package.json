@@ -16,7 +16,7 @@
     "webpack": "^1.13.1"
   },
   "dependencies": {
-    "parse": "^1.8.5",
+    "parse": "^2.10.0",
     "underscore": "^1.8.3"
   },
   "standard": {
